@@ -1,12 +1,37 @@
-import { readFile } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
+// import util from 'util';
 
-console.log('started a first task');
-readFile('./content/first.txt', 'utf8', (err, result) => {
-  if (err) {
-    console.log(err);
-    return;
+// const readFilePromise = util.promisify(readFile);
+// const writeFilePromise = util.promisify(writeFile);
+
+const start = async () => {
+  try {
+    const first = await readFile('./content/first.txt', 'utf8');
+    const second = await readFile('./content/second.txt', 'utf8');
+    await writeFile(
+      './content/result-mind-grenade.txt',
+      `THIS IS AWESOME! ${first} ${second}`,
+      { flag: 'a' }
+    );
+  } catch (error: unknown!) {
+    console.log(error.message);
   }
-  console.log(result);
-  console.log('completed the first task');
-});
-console.log('starting next task!');
+};
+
+start();
+
+// const getText = (path: string): Promise<NodeJS.ErrnoException | string> => {
+//   return new Promise((resolve, reject) => {
+//     readFile(path, 'utf8', (err, result) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };
+
+// getText('./content/first.txt')
+//   .then((result) => console.log(result))
+//   .catch((err) => console.log(err));
